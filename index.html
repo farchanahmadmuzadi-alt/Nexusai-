@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI | Masa Depan Kecerdasan</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="logo-loading">
+            <h1 class="nexus-logo">NEXUS AI</h1>
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
+    <!-- Halaman Login/Register -->
+    <div id="authPage" class="auth-page hidden">
+        <div class="glass-card auth-container">
+            <div class="auth-header">
+                <h1 class="nexus-logo">NEXUS AI</h1>
+                <p id="authSubtitle">Masuk ke akun kamu untuk melanjutkan</p>
+            </div>
+
+            <!-- Form Login -->
+            <form id="loginForm" class="auth-form active">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="nama@contoh.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Kata Sandi</label>
+                    <input type="password" id="loginPass" placeholder="Masukkan kata sandi" required>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox"> Ingat Saya
+                    </label>
+                    <a href="#" id="showForgot">Lupa Sandi?</a>
+                </div>
+                <button type="submit" class="btn-primary w-full">MASUK</button>
+                <p class="switch-form">Belum punya akun? <a href="#" id="showRegister">Daftar Sekarang</a></p>
+            </form>
+
+            <!-- Form Register -->
+            <form id="registerForm" class="auth-form">
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="regNama" placeholder="Nama kamu" required>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="nama@contoh.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Kata Sandi</label>
+                    <input type="password" id="regPass" placeholder="Buat kata sandi" required>
+                </div>
+                <div class="input-group">
+                    <label>Konfirmasi Sandi</label>
+                    <input type="password" id="regPass2" placeholder="Ulangi kata sandi" required>
+                </div>
+                <button type="submit" class="btn-primary w-full">DAFTAR</button>
+                <p class="switch-form">Sudah punya akun? <a href="#" id="showLogin">Masuk Sekarang</a></p>
+            </form>
+
+            <!-- Form Lupa Password -->
+            <form id="forgotForm" class="auth-form">
+                <div class="input-group">
+                    <label>Email Terdaftar</label>
+                    <input type="email" id="forgotEmail" placeholder="nama@contoh.com" required>
+                </div>
+                <button type="submit" class="btn-primary w-full">KIRIM TAUTAN PEMULIHAN</button>
+                <p class="switch-form"><a href="#" id="showLogin2">Kembali ke Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Halaman Utama Aplikasi -->
+    <div id="mainApp" class="app-container hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar glass">
+            <div class="sidebar-header">
+                <h2 class="nexus-logo text-lg">NEXUS AI</h2>
+                <button id="closeSidebar" class="btn-icon md-hidden"><i class="fa fa-times"></i></button>
+            </div>
+
+            <div class="sidebar-content">
+                <button id="newChatBtn" class="btn-primary w-full mb-3">
+                    <i class="fa fa-plus"></i> Percakapan Baru
+                </button>
+
+                <div class="search-box">
+                    <input type="text" id="searchChat" placeholder="Cari percakapan...">
+                    <i class="fa fa-search"></i>
+                </div>
+
+                <div class="chat-history-list" id="chatHistoryList">
+                    <!-- Daftar riwayat chat akan dimuat di sini -->
+                    <div class="empty-history">Belum ada percakapan</div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="sidebar-btn" data-modal="settingsModal">
+                    <i class="fa fa-cog"></i> Pengaturan
+                </button>
+                <button class="sidebar-btn" id="toggleTheme">
+                    <i class="fa fa-moon-o"></i> <span id="themeText">Mode Gelap</span>
+                </button>
+                <button class="sidebar-btn text-red-500" id="logoutBtn">
+                    <i class="fa fa-sign-out"></i> Keluar
+                </button>
+            </div>
+        </aside>
+
+        <!-- Area Utama Chat -->
+        <main class="chat-container">
+            <!-- Header Chat -->
+            <header class="chat-header glass">
+                <button id="openSidebar" class="btn-icon md-hidden"><i class="fa fa-bars"></i></button>
+                <div class="chat-info">
+                    <h3 id="currentChatTitle">Percakapan dengan NEXUS AI</h3>
+                    <div class="status-indicator">
+                        <span class="dot online"></span> <span>Online</span>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="btn-icon tooltip" data-tooltip="Hapus Chat" id="deleteChatBtn"><i class="fa fa-trash"></i></button>
+                    <button class="btn-icon tooltip" data-tooltip="Ekspor Chat" id="exportChatBtn"><i class="fa fa-download"></i></button>
+                    <button class="btn-icon tooltip" data-tooltip="Fitur Tambahan" id="moreOptionsBtn"><i class="fa fa-ellipsis-v"></i></button>
+                </div>
+            </header>
+
+            <!-- Isi Percakapan -->
+            <div id="chatMessages" class="chat-messages">
+                <!-- Pesan akan muncul di sini -->
+                <div class="message ai-message">
+                    <div class="avatar ai-avatar">N</div>
+                    <div class="message-content glass">
+                        <p>Halo! Saya <b>NEXUS AI</b>, kecerdasan buatan canggih yang siap membantu Anda. Saya bisa menjawab pertanyaan, membuat kode, menerjemahkan bahasa, menganalisis gambar, dan mencari informasi terbaru dari seluruh internet. Apa yang bisa saya bantu hari ini?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indikator Mengetik -->
+            <div id="typingIndicator" class="typing-indicator hidden">
+                <div class="avatar ai-avatar">N</div>
+                <div class="glass p-3 rounded-xl">
+                    <div class="dot-typing"></div>
+                </div>
+            </div>
+
+            <!-- Form Input -->
+            <div class="chat-input-container glass">
+                <div class="input-actions">
+                    <label class="btn-icon tooltip" data-tooltip="Unggah Gambar / Analisis">
+                        <i class="fa fa-image"></i>
+                        <input type="file" id="imageUpload" accept="image/*" hidden>
+                    </label>
+                    <button class="btn-icon tooltip" data-tooltip="Suara ke Teks" id="sttBtn"><i class="fa fa-microphone"></i></button>
+                </div>
+                
+                <textarea id="userInput" placeholder="Ketik pesan Anda... (Shift+Enter untuk baris baru)" rows="1"></textarea>
+                
+                <div class="input-actions">
+                    <button class="btn-icon tooltip" data-tooltip="Teks ke Suara" id="ttsBtn"><i class="fa fa-volume-up"></i></button>
+                    <button id="sendBtn" class="btn-primary rounded-full w-10 h-10 flex items-center justify-center">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: Pengaturan -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2>Pengaturan Aplikasi</h2>
+                <button class="close-btn"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Tema Warna</label>
+                    <select id="settingTheme" class="w-full p-2 rounded-lg bg-white/10">
+                        <option value="system">Ikuti Sistem</option>
+                        <option value="light">Mode Terang</option>
+                        <option value="dark">Mode Gelap</option>
+                        <option value="neon">Mode Neon</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Ukuran Font</label>
+                    <input type="range" min="12" max="20" value="16" id="fontSizeRange">
+                </div>
+                <div class="setting-group">
+                    <label>Bahasa Utama</label>
+                    <select id="langSelect" class="w-full p-2 rounded-lg bg-white/10">
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <hr class="my-4 border-white/10">
+                <div class="setting-group">
+                    <button id="backupDataBtn" class="btn-secondary w-full">Cadangkan Data</button>
+                    <button id="resetDataBtn" class="btn-danger w-full mt-2">Reset Semua Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Fitur AI Tambahan -->
+    <div id="toolsModal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h2>Alat NEXUS AI</h2>
+                <button class="close-btn"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="modal-body grid grid-cols-2 gap-3">
+                <button class="tool-btn glass p-3 rounded-xl" data-feature="translate">
+                    <i class="fa fa-language text-xl text-blue-400"></i>
+                    <p>Translator</p>
+                </button>
+                <button class="tool-btn glass p-3 rounded-xl" data-feature="summary">
+                    <i class="fa fa-file-text-o text-xl text-purple-400"></i>
+                    <p>Peringkas Teks</p>
+                </button>
+                <button class="tool-btn glass p-3 rounded-xl" data-feature="grammar">
+                    <i class="fa fa-check-square-o text-xl text-green-400"></i>
+                    <p>Cek Tata Bahasa</p>
+                </button>
+                <button class="tool-btn glass p-3 rounded-xl" data-feature="math">
+                    <i class="fa fa-calculator text-xl text-yellow-400"></i>
+                    <p>Penyelesai Matematika</p>
+                </button>
+                <button class="tool-btn glass p-3 rounded-xl" data-feature="code">
+                    <i class="fa fa-code text-xl text-red-400"></i>
+                    <p>Generator Kode</p>
+                </button>
+                <button class="tool-btn glass p-3 rounded-xl" data-feature="essay">
+                    <i class="fa fa-pencil text-xl text-indigo-400"></i>
+                    <p>Penulis Artikel</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifikasi Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
